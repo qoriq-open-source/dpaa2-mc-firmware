@@ -1,0 +1,60 @@
+/*
+ * Copyright 2016 Freescale Semiconductor, Inc.
+
+ * DPC for ls2080a RDB boards featuring SerDes 0x2A_0x41.
+ * This DPC defines one network interface mapped on the ETH0 copper port.
+ * This together with the available DPMCP objects should be enough to boot Linux
+ * and to allow the dynamic addition of other objects to the Linux container,
+ * using the 'restool' utility.
+ */
+
+/dts-v1/;
+/* DPC */
+/ {
+	resources {
+		icid_pools {
+			icid_pool@1 {
+				num = <100>;
+				base_icid = <0>;
+			};
+		};
+	};
+	mc_general {
+		log {
+			mode = "LOG_MODE_ON";
+			level = "LOG_LEVEL_WARNING";
+		};
+		console {
+			mode = "CONSOLE_MODE_ON";
+			uart_id = <3>;
+		};
+	};
+	controllers {
+		qbman {
+			/* Transform this number of 8-WQ channels into
+			 * four times as many 2-WQ channels. This is to allow
+			 * for the creation of more DPCON objects, albeit with
+			 * fewer priorities supported.
+			 */
+			wq_ch_conversion = <24>;
+		};
+	};
+	board_info {
+		/* For RDB SerDes 0x2a_41 */
+		ports {
+			/* AQR PHYs */
+			mac@5 {
+				link_type = "MAC_LINK_TYPE_PHY";
+			};
+			mac@6 {
+				link_type = "MAC_LINK_TYPE_PHY";
+			};
+			mac@7 {
+				link_type = "MAC_LINK_TYPE_PHY";
+			};
+			mac@8 {
+				link_type = "MAC_LINK_TYPE_PHY";
+			};
+		};
+	};
+};
